@@ -3,12 +3,13 @@ import axios from "axios";
 
 import CredentialsProvider from "next-auth/providers/credentials"
 import {randomBytes, randomUUID} from "crypto";
+import {baseURL} from "@/src/utils/baseURL";
 
 
 export  const options: AuthOptions = {
     providers: [
         CredentialsProvider({
-            name: "theBankerApp",
+            name: "WS School Management Sysytem",
             credentials: {
                 username: { label: "Username", type: "text", placeholder: "jsmith" },
                 password: { label: "Password", type: "password" }
@@ -16,15 +17,16 @@ export  const options: AuthOptions = {
 
             async authorize(credentials, req){
                try {
-                   const res = await axios.post("https://oluyole.thebanker.app:8042/mobile/api/Account/mobile-login-portal", credentials)
+                   const res = await baseURL.post("/user/login", credentials)
                    const user = res.data
                    // If no error and we have user data, return it
-                   if (user) {
+                   if (user){
                        return user
                    }
                    // Return null if user data could not be retrieved
                    return null
-               }catch (e) {
+               }catch (e: any) {
+                   console.log(e)
                    throw new Error(e.response.data);
                }
             },
@@ -34,10 +36,9 @@ export  const options: AuthOptions = {
     session: {
         strategy: "jwt",
         maxAge:  3 * 60 * 60,
-
     },
     pages: {
-        signIn: '/login',
+        signIn: '/',
     },
     callbacks: {
         async jwt({ token, user, account }) {
@@ -50,14 +51,13 @@ export  const options: AuthOptions = {
             return token;
         },
 
-        async session({ session, token }) {
-            // delete session.user?.name;
-            // delete session.user?.email;
-            // delete session.user?.image;
-            // session.user = token;
-            // session.user.refreshToken = token.refreshToken;
-            // session.user.accessTokenExpires = token.accessTokenExpires;
-            return token;
+       async session({ session, token }) {
+            // Modify the session object as per your requirements
+            session.user = {
+                ...session.user,
+                ...token,
+            };
+            return session;
         },
     },
 }
