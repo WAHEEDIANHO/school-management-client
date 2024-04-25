@@ -8,7 +8,8 @@ import IsAuthUserAvailable from "@/components/utils/IsAuthUserAvailable";
 function AppBar() {
     const user: IUser = useSelector((state: any) => state.user?.reguser);
     return (
-        <div className="header">
+        <IsAuthUserAvailable>
+            <div className="header">
                 <div className="header-left">
                     <Link href={`/${user?.role.toLowerCase()}`}
                           className="logo d-lg-flex flex-row align-items-baseline">
@@ -87,15 +88,15 @@ function AppBar() {
                                 </div>
                             </div>
                         </Link>
-                        <div className="dropdown-menu">
+                        <div className="dropdown-menu rounded-4">
                             <div className="user-header">
                                 <div className="avatar avatar-sm">
                                     <img src="/assets/img/profiles/avatar-01.jpg" alt="User Image"
                                          className="avatar-img rounded-circle"/>
                                 </div>
                                 <div className="user-text">
-                                    <h6>Ryan Taylor</h6>
-                                    <p className="text-muted mb-0">Administrator</p>
+                                    <h6>{`${user?.firstName} ${user?.lastName}`}</h6>
+                                    <p className="text-muted mb-0">{user?.role.toLowerCase()}</p>
                                 </div>
                             </div>
                             <Link className="dropdown-item" href="/profile">My Profile</Link>
@@ -106,6 +107,7 @@ function AppBar() {
                 </ul>
 
             </div>
+        </IsAuthUserAvailable>
     );
 }
 

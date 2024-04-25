@@ -6,7 +6,6 @@ Version      : 1.0
 
 (function($) {
     "use strict";
-	
 	// Variables declarations
 	
 	var $wrapper = $('.main-wrapper');
@@ -364,7 +363,7 @@ Version      : 1.0
 	if($('.circle-bar').length > 0) {
 		animateElements();
 	}
-	$(window).scroll(animateElements);
+	$(window).scroll(() => animateElements());
 	
 	// Preloader
 	

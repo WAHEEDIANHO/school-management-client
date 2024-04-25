@@ -4,7 +4,8 @@ import {getServerSession} from "next-auth";
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import {redirect} from "next/navigation";
 import {baseURL} from "@/src/utils/baseURL";
-import {ISubject} from "@/src/model/ISuject";
+import {ISubject, ITopic} from "@/src/model/ISuject";
+import {Formatter} from "@/src/utils/formatter";
 
 async function StudentSubjects({ student } : {student: IStudent}) {
     const session: any = await getServerSession(options) ;
@@ -18,6 +19,16 @@ async function StudentSubjects({ student } : {student: IStudent}) {
             }
         })
 
+    console.log(subjects)
+    let topic: ITopic = {
+        lessons: [],
+        topicId: "",
+        topicName: "",
+        description: "",
+        subjectTitle: "",
+        term: 0,
+        gradeNumber: 0,
+    }
     return (
         <div className="row">
             {
@@ -28,9 +39,12 @@ async function StudentSubjects({ student } : {student: IStudent}) {
                                 <div className="card-body">
                                     <div className="db-widgets d-flex justify-content-between align-items-center">
                                         <div className="db-info">
-                                            <p className="fw-bold">Mathematics</p>
-                                            <p className="small">27 <span className="text-primary">Topics</span> -
-                                                13 <span className="text-primary">Lessons</span></p>
+                                            <p className="fw-bold">{Formatter.capitalizeFirstLetter(subject.subjectTitle)}</p>
+                                            <p className="small">{subject?.topics.length} <span className="text-primary">Topics</span> - <span> </span>
+                                                {subject?.topics.reduce((a , b ) => {
+                                                     a.lessons.push(b.lessons);
+                                                     return a;
+                                                }, topic).lessons.length} <span className="text-primary">Lessons</span></p>
                                         </div>
                                         <div className="db-icon position-absolute top-0 end-0 m-3">
                                             <img src="assets/img/icons/teacher-icon-02.svg" alt="Dashboard Icon"/>

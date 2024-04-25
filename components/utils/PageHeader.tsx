@@ -1,7 +1,6 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+'use client'
+import React, {useEffect} from 'react';
 import {Formatter} from "@/src/utils/formatter";
-import Link from "next/link";
 import {IStudent} from "@/src/model/IStudent";
 
 function PageHeader({ student }: {student: IStudent}) {
@@ -13,7 +12,7 @@ function PageHeader({ student }: {student: IStudent}) {
                         <h3 className="page-title">Hi! {Formatter.capitalizeFirstLetter(student?.firstName)}</h3>
                         <ul className="breadcrumb">
                             {/*<li className="breadcrumb-item"><Link href="/student">Home</Link></li>*/}
-                            <li className="breadcrumb-item active">Student@Grade4</li>
+                            <li className="breadcrumb-item active">{`${Formatter.capitalizeFirstLetter(student.role)}@Grade${student.classId}`}</li>
                         </ul>
                     </div>
                 </div>

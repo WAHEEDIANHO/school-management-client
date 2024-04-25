@@ -13,12 +13,18 @@ import StoreProvider from "@/src/store/StoreProvider";
 import IsAuthUserAvailable from "@/components/utils/IsAuthUserAvailable";
 import AppBar from "@/components/utils/AppBar";
 import SideBar from "@/components/utils/SideBar";
+import LocalModuleImporter from "@/components/utils/LocalModuleImporter";
+import React from "react";
+import {SessionProvider} from "next-auth/react";
+import AuthProvider from "@/src/context/AuthProvider";
+
+
 // import {getServerSession} from "next-auth";
 // import {redirect} from "next/navigation";
 // import '';
 // import "../globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "WS School Management System",
@@ -36,30 +42,21 @@ export default async function RootLayout({
     // }
     return (
         <StoreProvider>
-            <IsAuthUserAvailable>
-                <html lang="en">
-                <body className={inter.className}>
-                  <div className="main-wrapper">
-                      {/*Header*/}
-                      <AppBar />
-                      {/*SideBar*/}
-                      <SideBar />
-                      {children}
-                    </div>
-                    <Script src="/assets/js/jquery.min.js" strategy="beforeInteractive"/>
-                    <Script src="/assets/js/bootstrap.bundle.min.js"/>
-                    <Script src="/assets/js/feather.min.js"/>
-                    <Script src="/assets/plugins/slimscroll/jquery.slimscroll.min.js"/>
-                    <Script src="/assets/plugins/apexchart/apexcharts.min.js"/>
-                    <Script src="/assets/plugins/apexchart/chart-data.js"/>
-                    <Script src="/assets/plugins/simple-calendar/jquery.simple-calendar.js"/>
-                    <Script src="/assets/js/calander.js"/>
-                    <Script src="/assets/js/circle-progress.min.js"/>
-                    <Script src="/assets/js/script.js"/>
-                    {/*<Script src="/assets/js/test.js"/>*/}
-                </body>
-                </html>
-            </IsAuthUserAvailable>
+            <AuthProvider>
+                    <html lang="en">
+                    <body>
+                      <div className="main-wrapper">
+                          {/*Header*/}
+                          <AppBar />
+                          {/*SideBar*/}
+                          <SideBar />
+                          {children}
+                        </div>
+                      <Script src="/assets/js/jquery.min.js" strategy="beforeInteractive"/>
+                    <LocalModuleImporter />
+                    </body>
+                    </html>
+            </AuthProvider>
         </StoreProvider>
     );
 }

@@ -13,11 +13,11 @@ export default function Login() {
     const sess = useSession();
 
     const router  = useRouter();
-    const serarchParam = useSearchParams();
+    // const serarchParam = useSearchParams();
 
     async function loginHandler(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        const callBackURL = serarchParam.get("callbackUrl");
+        // const callBackURL = serarchParam.get("callbackUrl");
         try{
             const res: any = await nextSignIn('credentials', {
                 redirect: false,
